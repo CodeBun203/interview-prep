@@ -88,24 +88,23 @@ def has_cycle(head):
 
 def find_cycle_start(head):
     slow, fast = head, head
+    
+    # Phase 1: Detect the cycle
     while fast and fast.next:
         slow = slow.next
         fast = fast.next.next
         if slow == fast:
             break
     else:
-        return None  # no cycle
-    # Phase 2: reset one pointer to head, advance both by 1
-    slow = head
-    while slow != fast:
-        slow = slow.next
-        fast = slow.next  # BUG in original: should be fast.next
-    # Actually:
+        return None  # No cycle exists
+
+    # Phase 2: Find the start of the cycle
     slow = head
     while slow != fast:
         slow = slow.next
         fast = fast.next
-    return slow  # cycle start
+        
+    return slow  # The node where the cycle begins
 ```
 
 **Why phase 2 works:** The math proves that after the meeting point, the distance from head to cycle start equals the distance from meeting point to cycle start. Reset one pointer to head, advance both by 1 — they meet exactly at the cycle start.
